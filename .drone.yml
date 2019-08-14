@@ -69,71 +69,12 @@
 #     - push
 #     - tag
 
-kind: pipeline
-type: docker
-name: linux-arm64
-
-platform:
-  arch: arm64
-  os: linux
-
-steps:
-- name: build
-  image: golang:1.12
-  commands:
-  - sh scripts/build.sh
-  environment:
-    GOARCH: arm64
-    GOOS: linux
-
-- name: publish_drone
-  image: plugins/docker:18
-  settings:
-    auto_tag: true
-    auto_tag_suffix: linux-arm64
-    dockerfile: docker/Dockerfile.server.linux.arm64
-    repo: drone/drone
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
-
-- name: publish_agent
-  image: plugins/docker:18
-  settings:
-    auto_tag: true
-    auto_tag_suffix: linux-arm64
-    dockerfile: docker/Dockerfile.agent.linux.arm64
-    repo: drone/agent
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
-
-- name: publish_controller
-  image: plugins/docker:18
-  settings:
-    auto_tag: true
-    auto_tag_suffix: linux-arm64
-    dockerfile: docker/Dockerfile.controller.linux.arm64
-    repo: drone/controller
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
-
-trigger:
-  event:
-  - push
-  - tag
-
-# ---
 # kind: pipeline
 # type: docker
-# name: linux-arm
+# name: linux-arm64
 
 # platform:
-#   arch: arm
+#   arch: arm64
 #   os: linux
 
 # steps:
@@ -142,15 +83,15 @@ trigger:
 #   commands:
 #   - sh scripts/build.sh
 #   environment:
-#     GOARCH: arm
+#     GOARCH: arm64
 #     GOOS: linux
 
 # - name: publish_drone
 #   image: plugins/docker:18
 #   settings:
 #     auto_tag: true
-#     auto_tag_suffix: linux-arm
-#     dockerfile: docker/Dockerfile.server.linux.arm
+#     auto_tag_suffix: linux-arm64
+#     dockerfile: docker/Dockerfile.server.linux.arm64
 #     repo: drone/drone
 #     username:
 #       from_secret: docker_username
@@ -161,8 +102,8 @@ trigger:
 #   image: plugins/docker:18
 #   settings:
 #     auto_tag: true
-#     auto_tag_suffix: linux-arm
-#     dockerfile: docker/Dockerfile.agent.linux.arm
+#     auto_tag_suffix: linux-arm64
+#     dockerfile: docker/Dockerfile.agent.linux.arm64
 #     repo: drone/agent
 #     username:
 #       from_secret: docker_username
@@ -173,21 +114,71 @@ trigger:
 #   image: plugins/docker:18
 #   settings:
 #     auto_tag: true
-#     auto_tag_suffix: linux-arm
-#     dockerfile: docker/Dockerfile.controller.linux.arm
+#     auto_tag_suffix: linux-arm64
+#     dockerfile: docker/Dockerfile.controller.linux.arm64
 #     repo: drone/controller
 #     username:
 #       from_secret: docker_username
 #     password:
 #       from_secret: docker_password
+---
+kind: pipeline
+type: docker
+name: linux-arm
 
-# trigger:
-#   event:
-#   - push
-#   - tag
+platform:
+  arch: arm
+  os: linux
 
-# depends_on:
-# - linux-amd64
+steps:
+- name: build
+  image: golang:1.12
+  commands:
+  - sh scripts/build.sh
+  environment:
+    GOARCH: arm
+    GOOS: linux
+
+- name: publish_drone
+  image: plugins/docker:18
+  settings:
+    auto_tag: true
+    auto_tag_suffix: linux-arm
+    dockerfile: docker/Dockerfile.server.linux.arm
+    repo: drone/drone
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+- name: publish_agent
+  image: plugins/docker:18
+  settings:
+    auto_tag: true
+    auto_tag_suffix: linux-arm
+    dockerfile: docker/Dockerfile.agent.linux.arm
+    repo: drone/agent
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+- name: publish_controller
+  image: plugins/docker:18
+  settings:
+    auto_tag: true
+    auto_tag_suffix: linux-arm
+    dockerfile: docker/Dockerfile.controller.linux.arm
+    repo: drone/controller
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+trigger:
+  event:
+  - push
+  - tag
 
 # ---
 # kind: pipeline
