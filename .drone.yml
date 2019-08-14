@@ -121,6 +121,7 @@
 #       from_secret: docker_username
 #     password:
 #       from_secret: docker_password
+
 ---
 kind: pipeline
 type: docker
@@ -179,6 +180,8 @@ trigger:
   event:
   - push
   - tag
+
+
 # ---
 # kind: pipeline
 # type: ssh
